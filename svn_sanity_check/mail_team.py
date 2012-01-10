@@ -1,7 +1,7 @@
 '''
 '''
+#import logging
 import smtplib
-import logging
 
 # FIXME: Add logging for daily / Weekly digests
 #Nice little implemention of logging output

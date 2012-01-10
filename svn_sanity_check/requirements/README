@@ -1,0 +1,13 @@
+################################################################################
+#   Required files for Server 2003 (and other MS Operating systems             #
+################################################################################
+
+As the python implementation for windows does not seem to include support for
+Subversion you will need to install these library's manually.
+
+File include here is: svn-win32-1.6.15_py_2.7.zip
+
+DO NOT just use this file, this library is designed for Python 2.7 with SVN 1.6
+
+It is unlikely you are using this combination so download the correct file from:
+http://trac.edgewall.org/wiki/TracSubversion

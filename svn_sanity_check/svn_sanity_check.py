@@ -3,15 +3,15 @@
 """
 Crawl a working copy directory, record status information to a log file.
 """
-import os
-import sys
-import os.path
-import svn.core
-import svn.client
-import svn.wc
 import ConfigParser
-import platform
 import mail_team
+import os
+import os.path
+import platform
+import svn.client
+import svn.core
+import svn.wc
+import sys
 
 # FIXME: Global var
 global data
@@ -122,7 +122,7 @@ if __name__ == '__main__':
                 path = 'E:\\weblogs\\'+section+'-svn_check.log'
                 # FIXME: Remove these checks in production.
                 if os.name == 'nt':
-                    if os.path.isfile:
+                    if os.path.isfile(path):
                         # FIXME: Make sure this removes the correct file
                         os.unlink(path)
                         # Do the real work.
