@@ -38,10 +38,10 @@ def process_data(data):
     #    file.write("\n")  
     #except IOError, e:
     #    print e
-    try:
-        mail_team.email_results(server_name,section,data)
-    except Exception, e:
-        print e
+    #try:
+    #    mail_team.email_results(server_name,section,data)
+    #except Exception, e:
+    #    print e
     print data
     
 
