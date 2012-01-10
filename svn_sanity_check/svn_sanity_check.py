@@ -31,13 +31,13 @@ def process_data(data):
     global section
     #FIXME: Check path is correct
     
-    #log_file = 'E:\\weblogs\\+section\\'+'svn_check.log'
-    #file = open(log_file, 'a')
-    #try:
-    #    file.write(data)
-    #    file.write("\n")  
-    #except IOError, e:
-    #    print e
+    log_file = 'E:\\weblogs\\'+section+'\\svn_check.log'
+    file = open(log_file, 'a')
+    try:
+        file.write(data)
+        file.write("\n")  
+    except IOError, e:
+        print e
     #try:
     #    mail_team.email_results(server_name,section,data)
     #except Exception, e:
@@ -102,7 +102,7 @@ if __name__ == '__main__':
         # FIXME: Remove these checks in production.
         if os.name == 'nt':
             config = ConfigParser.RawConfigParser()
-            config_file = config.readfp(open('E:\\webs\\'+server_name+'-svn_status.config'))
+            config_file = config.readfp(open('C:\\svn_sanity_check\\config\\'+server_name+'-svn_status.config'))
         else:
             config = ConfigParser.RawConfigParser()
             config_file = config.read(server_name+"-svn_status.config")
