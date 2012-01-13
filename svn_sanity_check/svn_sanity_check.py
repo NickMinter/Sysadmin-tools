@@ -13,43 +13,45 @@ import svn.core
 import svn.wc
 import sys
 
-# FIXME: Global var
+# FIXME: Global Variables
 global data
 global section
 
-# Change server name with each deployment
-# FIXME: add server name
+# determine server name, this is used with the config file name 
+#and log file name / location
 server_name = platform.node()
 
 # Change verbosity of the scripts output
 verbose = 0
-# FIXME: What is the prefix used for in SVN?
+# FIXME: Test outcome of changing prefix
 prefix = None
 
 def process_data(data):
-    # FIXME: Global var
+    """
+    record and process the svn records,
+    the function is called for each file processed.
+    """
+    # FIXME: Global Variable
     global section
-    #FIXME: Check path is correct
-    
-    log_file = 'E:\\weblogs\\'+section+'\\svn_check.log'
-    file = open(log_file, 'a')
+        
+    log_file = 'E:\\weblogs\\'+section+'\\'+'svn_check.log'
+    log_data = open(log_file, 'a')
     try:
-        file.write(data)
-        file.write("\n")  
+        log_data.write(data)
+        log_data.write("\n")  
     except IOError, e:
         print e
+    # FIXME: Fix mail capability
     #try:
     #    mail_team.email_results(server_name,section,data)
     #except Exception, e:
     #    print e
-    print data
+    #print data
     
 
 def generate_status_code(status):
-    """Translate a status value into a single-character status code,
-    using the same logic as the Subversion command-line client.
-    Change the standard status messages to make some form of sense without
-    ambiguity
+    """
+    Change the standard status messages to make some form of sense without ambiguity
     """
     code_map = { svn.wc.svn_wc_status_none        : ' ',
                  svn.wc.svn_wc_status_normal      : ' ',
@@ -68,6 +70,9 @@ def generate_status_code(status):
     return code_map.get(status, '?')
 
 def do_status(wc_path, verbose, prefix):
+    """
+    Build subversion status for the context path received.
+    """
     # Build a client context baton.
     ctx = svn.client.svn_client_create_context()
 
@@ -82,7 +87,6 @@ def do_status(wc_path, verbose, prefix):
         prefix_text = ''
         if prefix is not None:
             prefix_text = prefix + " "
-        #FIXME: Here's our output.. format it and direct it to the correct path.
         #print('%s%s%s  %s' % (prefix_text, text_status, prop_status, path))
         data = text_status+" "+path
         
@@ -99,7 +103,6 @@ if __name__ == '__main__':
 
     try:
         #Added check to set config location on POSIX system
-        # FIXME: Remove these checks in production.
         if os.name == 'nt':
             config = ConfigParser.RawConfigParser()
             config_file = config.readfp(open('C:\\svn_sanity_check\\config\\'+server_name+'-svn_status.config'))
@@ -114,17 +117,17 @@ if __name__ == '__main__':
         global section
         for section in config.sections():
             for option in config.options(section):
-                code_base = config.get(section,option)
+                code_base = config.get(section, option)
                 # Canonicalize the repository path.
                 # FIXME: Malformated paths/options in
                 # the config file cause the script to die.
                 wc_path = svn.core.svn_path_canonicalize(code_base)
-                path = 'E:\\weblogs\\'+section+'-svn_check.log'
-                # FIXME: Remove these checks in production.
+                path = 'E:\\weblogs\\'+section+'\\'+'svn_check.log'
                 if os.name == 'nt':
                     if os.path.isfile(path):
-                        # FIXME: Make sure this removes the correct file
                         os.unlink(path)
+                    else:
+                        pass
                         # Do the real work.
                     try:
                         do_status(wc_path, verbose, prefix)
@@ -132,12 +135,13 @@ if __name__ == '__main__':
                         sys.stderr.write("Error (%d): %s\n" % (e.apr_err, e.message))
                         sys.exit(1)
                 else:
-                    # Do the real work.
+                    #Do the real work.
                     try:
                         do_status(wc_path, verbose, prefix)
                     except svn.core.SubversionException, e:
                         sys.stderr.write("Error (%d): %s\n" % (e.apr_err, e.message))
                         sys.exit(1)
+                        
     except Exception, e:
         print e
         sys.exit(1)
